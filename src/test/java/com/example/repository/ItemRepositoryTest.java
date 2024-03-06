@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(classes = ItemRepository.class) // Could not autowire. No beans of 'ItemRepository' type found. 해결하기 위해 직접 인자로 주입
+// @SpringBootTest(classes = ItemRepository.class) // Could not autowire. No beans of 'ItemRepository' type found. 해결하기 위해 직접 인자로 주입
+@SpringBootTest
+@ActiveProfiles("test")
 @TestPropertySource(locations = "classpath:application-test.properties")
 class ItemRepositoryTest {
 
