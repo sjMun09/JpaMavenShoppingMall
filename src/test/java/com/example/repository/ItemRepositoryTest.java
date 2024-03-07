@@ -66,4 +66,79 @@ class ItemRepositoryTest {
             System.out.println(item.toString());
         }
     }
+
+    @Test
+    @DisplayName("상품명, 상품상세설명 or 테스트")
+    public void findByOrItemDetailTest() {
+        this.createItemList();
+        List<Item> itemList = itemRepository.findByItemNmOrItemDetail("테스트 상품1", "테스트 상품 상세 설명5");
+        for (Item item : itemList) {
+            System.out.println(item.toString());
+        }
+    }
+
+//    @Test
+//    @DisplayName("상품명, 상품상세설명 or 테스트2")
+//    public void findByOrItemDetailTest2() {
+//        this.createItemList();
+//        List<Item> itemList = itemRepository.findByItemNmOrItemDetail("테스트 상품2", "테스트 상품 상세 설명4");
+//        for (Item item : itemList) {
+//            System.out.println(item.toString());
+//        }
+//    }
+    /*
+    출력
+    Item(id=2, itemNm=테스트 상품2, price=10002, stockNumber=100, itemDetail=테스트 상품 상세 설명2, itemSellStatus=SELL, regTime=2024-03-07T00:43:31.709386, updateTime=2024-03-07T00:43:31.709396)
+    Item(id=4, itemNm=테스트 상품4, price=10004, stockNumber=100, itemDetail=테스트 상품 상세 설명4, itemSellStatus=SELL, regTime=2024-03-07T00:43:31.710886, updateTime=2024-03-07T00:43:31.710892)
+     */
+
+    @Test
+    @DisplayName("가격 LessThan 테스트")
+    public void findByPriceLessThan() {
+        this.createItemList();
+        List<Item> itemList = itemRepository.findByPriceLessThan(10005);
+        for (Item item : itemList) {
+            System.out.println(item.toString());
+        }
+    }
+
+    @Test
+    @DisplayName("가격 내림차순 조희 테스트")
+    public void findByPriceLessThanOrderByPriceDesc() {
+        this.createItemList();
+        List<Item> itemList = itemRepository.findByPriceLessThanOrderByPriceDesc(10005);
+        for (Item item : itemList) {
+            System.out.println(item.toString());
+        }
+    }
+
+    @Test
+    @DisplayName("가격 올림차순 조희 테스트")
+    public void findByPriceLessThanOrderByPriceAsc() {
+        this.createItemList();
+        List<Item> itemList = itemRepository.findByPriceLessThanOrderByPriceAsc(10005);
+        for (Item item : itemList) {
+            System.out.println(item.toString());
+        }
+    }
+
+    @Test
+    @DisplayName("@Query파라미터를 이용한 상품조회 테스트")
+    public void findByItemDetail() {
+        this.createItemList();
+        List<Item> itemList = itemRepository.findByItemDetail("테스트 상품 상세 설명");
+        for (Item item : itemList) {
+            System.out.println(item.toString());
+        }
+    }
+
+    @Test
+    @DisplayName("nativeQuery 속성을 이용한 상품 조회 테스트")
+    public void findByItemDetailNative() {
+        this.createItemList();
+        List<Item> itemList = itemRepository.findByItemDetailByNative("테스트 상품 상세 설명");
+        for (Item item : itemList) {
+            System.out.println(item.toString());
+        }
+    }
 }
