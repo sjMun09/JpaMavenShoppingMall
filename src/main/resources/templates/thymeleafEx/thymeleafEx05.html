@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>타임리프 링크처리 예제 페이지</h1>
+    <div>
+        <a th:href="@{/thymeleafEx01.html}">예제1 페이지로 이동</a> <!-- 링크 한번 더 생각해보기 -->
+    </div>
+    <div>
+        <a th:href="@{https://www.thymeleaf.org/}">타임리프 공식문서 페이지로 이동</a>
+    </div>
+    <div> <!-- 링크 ex06 이랑 잘 연동이 되는지, 한번 더 생각해보기 만약 안된다면 404error뜰거임. 그러면 여기가 문제.-->
+        <a th:href="@{/thymeleaf/ex06(param1 = '파라미터 데이터1', param2 = '파라미터 데이터2')}">타임리프 파라미터 전달</a>
+    </div>
+</body>
+</html>
