@@ -18,7 +18,7 @@
     </thead>
     <tbody>
     <tr th:each="itemDto, status: ${itemDtoList}">
-        <td th:switch="${status.even}">
+        <td th:switch="${status.even}"> <!-- 얘가 true '짝', false '홀' -->
             <span th:case="false">홀수</span>
             <span th:case="true">짝수</span>
         </td>
