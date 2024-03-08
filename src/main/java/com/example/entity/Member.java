@@ -31,6 +31,7 @@ public class Member {
     @Enumerated(EnumType.STRING) //2
     private Role role;
 
+    // MemberServiceTEST 해볼 예정임.
     public static Member createMember(MemberFormDto memberFormDto, PasswordEncoder passwordEncoder) { //3
         Member member = new Member();
         member.setName(memberFormDto.getName());
