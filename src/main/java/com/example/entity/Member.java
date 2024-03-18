@@ -13,7 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Setter
 @Table(name = "member")
 @ToString
-public class Member {
+public class Member extends BaseEntity{ // Auditing 기능 적용.
     @Id
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
