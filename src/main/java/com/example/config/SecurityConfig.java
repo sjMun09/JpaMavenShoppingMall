@@ -4,6 +4,7 @@ import com.example.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,14 +22,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.formLogin()
-                .loginPage("/members/login")
-                .defaultSuccessUrl("/")
-                .usernameParameter("email")
-                .failureUrl("/members/login/error")
+                .loginPage("/members/login") // 1
+                .defaultSuccessUrl("/")  // 2
+                .usernameParameter("email") // 3
+                .failureUrl("/members/login/error") // 4
                 .and()
                 .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
-                .logoutSuccessUrl("/");
+                .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout")) // 5
+                .logoutSuccessUrl("/"); // 6
 
         httpSecurity.authorizeHttpRequests()
                 .requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
@@ -36,8 +37,8 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
-        /*httpSecurity.exceptionHandling()
-                .authenticationEntryPoint(new CustomAuthenticationEntryPoint());*/
+        httpSecurity.exceptionHandling()
+                .authenticationEntryPoint(new CustomAuthenticationEntryPoint());
 
         return httpSecurity.build();
     }
@@ -46,5 +47,12 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+    //  필터체인 쓸거라서 주석
+    /*
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(memberService)
+                .passwordEncoder(passwordEncoder());
+    }*/
 
 }
