@@ -1,5 +1,5 @@
 # JpaMavenShoppingMall
-- Jpa, Springboot 3.2.3, java17,스프링 시큐리티 6, maven을 통해서 구현한 쇼핑몰입니다.
+- Jpa, Springboot 3.2.3, java17,스프링 시큐리티 6, maven, 테스트는 Junit5을 통해서 구현한 쇼핑몰입니다.
 - 현재 대세라고 생각되는 Gradle로만 프로젝트 구현을 해왔으나,<br>
  편식하지 않고 maven도 알아야 레거시 코드에 대해 분석 및 이해하기 용이하기 때문에 구현해봤습니다.
 - 추후에 최신 버전으로 소셜 로그인(리팩토링 때)을 추가할 예정입니다.
