@@ -1,7 +1,6 @@
 package com.example.service;
 
 
-import com.example.constant.ItemSellStatus;
 import com.example.dto.ItemFormDto;
 import com.example.entity.Item;
 import com.example.entity.ItemImg;
