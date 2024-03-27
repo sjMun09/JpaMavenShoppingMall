@@ -1,6 +1,5 @@
 package com.example.repository;
 
-import com.example.constant.ItemSellStatus;
 import com.example.entity.Item;
 import com.example.entity.QItem;
 import com.querydsl.core.BooleanBuilder;
@@ -21,8 +20,6 @@ import org.thymeleaf.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 // @SpringBootTest(classes = ItemRepository.class) // Could not autowire. No beans of 'ItemRepository' type found. 해결하기 위해 직접 인자로 주입
 @SpringBootTest
