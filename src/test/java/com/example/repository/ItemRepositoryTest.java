@@ -1,5 +1,6 @@
 package com.example.repository;
 
+import com.example.constant.ItemSellStatus;
 import com.example.entity.Item;
 import com.example.entity.QItem;
 import com.querydsl.core.BooleanBuilder;
