@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class OrderItem extends BaseEntity{
+public class OrderItem extends BaseEntity {
     @Id
     @GeneratedValue
     @Column(name = "order_item_id")
@@ -45,5 +45,12 @@ public class OrderItem extends BaseEntity{
 
     public int getTotalPrice() {
         return orderPrice * count;
+    }
+
+    /**
+     * 주문 취소
+     */
+    public void cancel() {
+        this.getItem().addStock(count);
     }
 }
