@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,7 @@ public class OrderService {
      * 주문 목록 조회
      */
     private final ItemImgRepository itemImgRepository;
+
     @Transactional(readOnly = true)
     public Page<OrderHistoryDto> getOrderList(String email, Pageable pageable) {
         List<Order> orders = orderRepository.findOrders(email, pageable);
@@ -58,14 +60,35 @@ public class OrderService {
             OrderHistoryDto orderHistoryDto = new OrderHistoryDto(order);
             List<OrderItem> orderItems = order.getOrderItems();
 
-            for(OrderItem orderItem : orderItems) {
-                          ItemImg itemImg = itemImgRepository.findByItemIdAndRepImgYn(orderItem.getItem().getId(), "Y");
-                          OrderItemDto orderItemDto = new OrderItemDto(orderItem, itemImg.getImgUrl());
-                          orderHistoryDto.addOrderItemDto(orderItemDto);
-                      }
+            for (OrderItem orderItem : orderItems) {
+                ItemImg itemImg = itemImgRepository.findByItemIdAndRepImgYn(orderItem.getItem().getId(), "Y");
+                OrderItemDto orderItemDto = new OrderItemDto(orderItem, itemImg.getImgUrl());
+                orderHistoryDto.addOrderItemDto(orderItemDto);
+            }
             OrderHistoryDtoList.add(orderHistoryDto);
         }
         return new PageImpl<OrderHistoryDto>(OrderHistoryDtoList, pageable, totalCount);
     }
 
+    /**
+     * 주문 취소
+     */
+    @Transactional(readOnly = true)
+    public boolean validateOrder(Long orderId, String email) {
+        Member curMember = memberRepository.findByEmail(email);
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new);
+        Member savedMember = order.getMember();
+
+        if (!StringUtils.equals(curMember.getEmail(), savedMember.getEmail())) {
+            return false;
+        }
+        return true;
+    }
+
+    public void cancelOrder(Long orderId){
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(EntityNotFoundException::new);
+        order.cancelOrder();
+    }
 }
