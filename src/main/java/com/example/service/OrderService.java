@@ -1,15 +1,18 @@
 package com.example.service;
 
 import com.example.dto.OrderDto;
-import com.example.entity.Item;
-import com.example.entity.Member;
-import com.example.entity.Order;
-import com.example.entity.OrderItem;
+import com.example.dto.OrderHistoryDto;
+import com.example.dto.OrderItemDto;
+import com.example.entity.*;
+import com.example.repository.ItemImgRepository;
 import com.example.repository.ItemRepository;
 import com.example.repository.MemberRepository;
 import com.example.repository.OrderRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,4 +42,30 @@ public class OrderService {
 
         return order.getId();
     }
+
+    /**
+     * 주문 목록 조회
+     */
+    private final ItemImgRepository itemImgRepository;
+    @Transactional(readOnly = true)
+    public Page<OrderHistoryDto> getOrderList(String email, Pageable pageable) {
+        List<Order> orders = orderRepository.findOrders(email, pageable);
+        Long totalCount = orderRepository.countOrder(email);
+
+        List<OrderHistoryDto> OrderHistoryDtoList = new ArrayList<>();
+
+        for (Order order : orders) {
+            OrderHistoryDto orderHistoryDto = new OrderHistoryDto(order);
+            List<OrderItem> orderItems = order.getOrderItems();
+
+            for(OrderItem orderItem : orderItems) {
+                          ItemImg itemImg = itemImgRepository.findByItemIdAndRepImgYn(orderItem.getItem().getId(), "Y");
+                          OrderItemDto orderItemDto = new OrderItemDto(orderItem, itemImg.getImgUrl());
+                          orderHistoryDto.addOrderItemDto(orderItemDto);
+                      }
+            OrderHistoryDtoList.add(orderHistoryDto);
+        }
+        return new PageImpl<OrderHistoryDto>(OrderHistoryDtoList, pageable, totalCount);
+    }
+
 }
