@@ -2,10 +2,9 @@ package com.example.service;
 
 import com.example.dto.CartDetailDto;
 import com.example.dto.CartItemDto;
-import com.example.entity.Cart;
-import com.example.entity.CartItem;
-import com.example.entity.Item;
-import com.example.entity.Member;
+import com.example.dto.CartOrderDto;
+import com.example.dto.OrderDto;
+import com.example.entity.*;
 import com.example.repository.CartItemRepository;
 import com.example.repository.CartRepository;
 import com.example.repository.ItemRepository;
@@ -28,6 +27,7 @@ public class CartService {
     private final MemberRepository memberRepository;
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
+    private final OrderService orderService;
 
     public Long addCart(CartItemDto cartItemDto, String email) {
         Item item = itemRepository.findById(cartItemDto.getItemId())
@@ -95,5 +95,29 @@ public class CartService {
         cartItemRepository.delete(cartItem);
     }
 
+    /**
+     * 주문 로직으로 전달할 orderDto 리스트 생성 및 주문 로직 호출, 주문한 상품은 장바구니에서 제거하는 로직
+     */
+    public Long orderCartItem(List<CartOrderDto> cartOrderDtoList, String email) {
+        List<OrderDto> orderDtoList = new ArrayList<>();
 
+        for (OrderDto cartOrderDto : orderDtoList) {
+            CartItem cartItem = cartItemRepository.findById(cartOrderDto.getItemId())
+                    .orElseThrow(EntityNotFoundException::new);
+
+            OrderDto orderDto = new OrderDto();
+            orderDto.setItemId(cartItem.getItem().getId());
+            orderDto.setCount(cartItem.getCount());
+            orderDtoList.add(orderDto);
+        }
+
+        Long orderId = orderService.orders(orderDtoList, email);
+
+        for (CartOrderDto cartOrderDto : cartOrderDtoList) {
+            CartItem cartItem = cartItemRepository.findById(cartOrderDto.getCartItemId())
+                    .orElseThrow(EntityNotFoundException::new);
+            cartItemRepository.delete(cartItem);
+        }
+        return orderId;
+    }
 }
